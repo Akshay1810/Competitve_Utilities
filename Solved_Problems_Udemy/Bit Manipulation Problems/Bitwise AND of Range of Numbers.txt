@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> intToBinary(int num) {
+    if (num == 0)
+    return {0};
+    
+    vector<int> bits;
+    while (num > 0) {
+        bits.push_back(num % 2);
+        num /= 2;
+    }
+    reverse(bits.begin(), bits.end());
+    return bits;
+}
+
+int rangeBitwiseAnd(int left, int right) {
+    vector<int> leftbit = intToBinary(left);
+    vector<int> rightbit = intToBinary(right);
+    // for(auto it:leftbit){
+    	// cout<<it<<" ";
+    // }
+    // cout<<endl;
+    // for(auto it:rightbit){
+    	// cout<<it<<" ";
+    // }
+    // cout<<endl;
+    int n = min(leftbit.size(), rightbit.size());
+    
+    int x = leftbit.size()-1;
+    int y = rightbit.size()-1;
+    
+    string str= "";
+    int val = 0;
+    int c = 2;
+    while(n--){
+        if(right-left+1 >= c){
+        	str += '0';
+        }else{
+        	if((leftbit[x] == rightbit[y]) and leftbit[x] == 1){
+	            str += '1';
+	        }else{
+	            str += '0';
+	        }
+        }
+        c*=2;
+        x--;
+        y--;
+    }
+    // cout<<str<<endl;
+    
+    c = 1;
+    for(int i = 0 ; i < str.size(); i++){
+        val += (str[i]-'0')*c;
+        c*=2;
+    }
+    return val;
+}

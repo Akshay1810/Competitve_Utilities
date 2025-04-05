@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+string getHint(string secret, string guess) {
+    int cnt = 0;
+    multiset<int> st;
+    vector<int> store;
+    for(int i = 0 ; i<secret.size(); i++){
+        if(secret[i] == guess[i]){
+            cnt++;
+        }else{
+            st.insert(secret[i]);
+            store.push_back(i);
+        }
+    }
+    int cnt2 =0;
+    for(int i = 0 ; i < store.size(); i++){
+        if(st.find(guess[store[i]])!=st.end()){
+            cnt2++;
+            st.erase(st.find(guess[store[i]]));
+        }
+    }
+    string s = "xAyB";
+    s[0] = cnt+'0';
+    s[2] = cnt2+'0';
+    return s;
+}

@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int count(int n){
+    int ans = 0; 
+    while(n > 0){
+        n = n&(n-1);
+        ans++;
+    }
+    return ans;
+}
+
+vector<int> sortByBits(vector<int> arr) {
+    sort(arr.begin(), arr.end(), [](int a, int b)->bool{
+        int x = count(a);
+        int y = count(b);
+        if(x != y){
+            return x < y;
+        }
+        return a < b;
+    });
+    return arr;
+}

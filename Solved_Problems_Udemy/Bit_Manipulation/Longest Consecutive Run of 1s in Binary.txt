@@ -1,0 +1,18 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve(int n) {
+    int maxi =  INT_MIN;
+    int curr = 0;
+    while(n > 0){
+        if((n&1)== 0){
+            maxi = max(curr, maxi);
+            curr = 0;
+        }else{
+            curr++;
+        }
+        n = (n>>1);
+    }
+    maxi = max(maxi, curr);
+    return maxi;
+}

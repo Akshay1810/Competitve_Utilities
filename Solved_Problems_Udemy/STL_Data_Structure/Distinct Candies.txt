@@ -1,0 +1,14 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int distributeCandies(vector<int> candies) {
+   set<int> st;
+   for(auto it: candies){
+       st.insert(it);
+   }
+   if(st.size() > candies.size()/2){
+       return candies.size()/2;
+   }else{
+       return st.size();
+   }
+}

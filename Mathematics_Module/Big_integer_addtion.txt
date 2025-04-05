@@ -1,0 +1,33 @@
+string calculate_addition(string s1, string s2){
+	if(s1.length() > s2.length()){
+		swap(s1, s2);
+	}
+	
+	string res = "";
+	reverse(all(s1));
+	reverse(all(s2));
+	int carry = 0;
+	int i;
+	for(i = 0 ; i < s1.size(); i++){
+		int digit = s1[i]-'0';
+		int digit2 = s2[i]-'0';
+		int sum = digit+digit2+carry;
+		int val = sum%10;
+		res.push_back('0'+val);
+		carry = sum/10;
+	}
+	while(i < s2.size()){
+		// cout<<carry<<endl;
+		int digit = s2[i]-'0';
+		int sum = digit+carry;
+		int val = sum%10;
+		carry = sum/10;
+		res.push_back('0'+val);
+		i++;
+	}
+	if(carry > 0){
+		res.push_back(carry+'0');
+	}
+	reverse(all(res));
+	return res;
+}

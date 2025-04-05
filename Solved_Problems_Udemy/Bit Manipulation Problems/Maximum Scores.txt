@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+long long count(vector<int> val){
+    long long n = 0;
+    for(int i = 0 ; i < val.size(); i++){
+        n += val[i]*(1<<(val.size()-1-i));
+    }
+    return n;
+}
+
+long long countggle(vector<int> val){
+    long long n = 0;
+    for(int i = 0 ; i < val.size(); i++){
+        n += (1-val[i])*(1<<(val.size()-1-i));
+    }
+    return n;
+}
+
+void dotggle(vector<int> &val){
+    for(int i = 0 ; i < val.size(); i++){
+        val[i] = 1-val[i];
+    }
+}
+
+int matrixScore(vector<vector<int>> grid) {
+    int n = grid.size();
+    int m = grid[0].size();
+    for(int i = 0 ; i < n ; i++){
+        if(countggle(grid[i]) > count(grid[i])){
+            dotggle(grid[i]);
+        }
+    }
+    for(int i = 0 ; i < m ; i++){
+        int cnt = 0;
+        for(int j = 0; j < n ; j++){
+            cnt += grid[j][i];
+        }
+        if(cnt < n-cnt){
+            for(int j = 0; j < n ; j++){
+                grid[j][i] = 1-grid[j][i];
+            }
+        }
+    }
+    
+    long long sum = 0;
+    for(int i = 0 ; i < n ; i++){
+        sum += count(grid[i]);
+    }
+    return sum;
+}

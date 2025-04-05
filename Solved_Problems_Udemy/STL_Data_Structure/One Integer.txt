@@ -1,0 +1,19 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve(vector<int> nums) {
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for(auto it:nums){
+        pq.push(it);
+    }
+    int cost = 0;
+    while(pq.size() > 1){
+        int a = pq.top(); 
+        pq.pop();
+        int b = pq.top();
+        pq.pop();
+        cost += a+b;
+        pq.push(a+b);
+    }
+    return cost;
+}
