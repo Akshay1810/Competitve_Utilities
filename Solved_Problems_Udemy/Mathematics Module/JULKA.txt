@@ -1,0 +1,202 @@
+// Problem: Julka
+// Contest: SPOJ - Classical
+// URL: https://www.spoj.com/problems/JULKA/
+// Memory Limit: 1536 MB
+// Time Limit: 2000 ms
+// 
+// Powered by CP Editor (https://cpeditor.org)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+typedef vector<pii> vii;
+
+#define int long long
+#define pyes cout << "YES" << "\n";
+#define pno cout << "NO" << "\n";
+#define endl "\n"
+#define rep(i, n) for (int i = 0; i < (n); ++i)
+#define repA(i, a, n) for (int i = a; i <= (n); ++i)
+#define repD(i, a, n) for (int i = a; i >= (n); --i)
+#define trav(a, x) for (auto &a : x)
+#define all(x) x.begin(), x.end()
+#define sz(x) (int)(x).size()
+#define fill(a) memset(a, 0, sizeof(a))
+#define ff first
+#define ss second
+#define mp make_pair
+#define pb push_back
+
+// debugger commands
+// #ifndef ONLINE_JUDGE
+// #include "header/debugger.h"
+// #endif
+
+mt19937_64 RNG(chrono::steady_clock::now().time_since_epoch().count());
+
+string divide(string& number) {
+    // If the number is empty or just "0", return "0"
+    if (number.empty() || (number.length() == 1 && number[0] == '0')) {
+        return "0";
+    }
+    
+    string result;
+    int carry = 0;
+    
+    // Process each digit from left to right
+    for (char digit : number) {
+        if (!isdigit(digit)) {
+            throw std::invalid_argument("Input contains non-digit characters");
+        }
+        
+        // Convert character to integer
+        int currentDigit = digit - '0';
+        
+        // Calculate the current result digit
+        int resultDigit = (carry * 10 + currentDigit) / 2;
+        
+        // Calculate the carry for the next iteration
+        carry = (currentDigit % 2) ? 1 : 0;
+        
+        // Append the result digit to our answer
+        // Skip leading zeros
+        if (!(result.empty() && resultDigit == 0)) {
+            result.push_back(resultDigit + '0');
+        }
+    }
+    
+    // If result is empty, it means the number was less than 2
+    if (result.empty()) {
+        return "0";
+    }
+    
+    return result;
+}
+
+string subtract(string& a, string& b) {
+    // Ensure a is not smaller than b
+    if (a.length() < b.length() || (a.length() == b.length() && a < b)) {
+        // If a < b, return negative result
+        string result = subtract(b, a);
+        if (result == "0") return "0";  // Special case: if result is 0, don't add negative sign
+        return "-" + result;
+    }
+    
+    string result;
+    int borrow = 0;
+    
+    // Pad b with leading zeros to match a's length
+    string paddedB = std::string(a.length() - b.length(), '0') + b;
+    
+    // Process digits from right to left
+    for (int i = a.length() - 1; i >= 0; i--) {
+        int digitA = a[i] - '0';
+        int digitB = paddedB[i] - '0';
+        
+        // Apply borrow from previous step
+        digitA -= borrow;
+        
+        // If we need to borrow for this digit
+        if (digitA < digitB) {
+            digitA += 10;  // Borrow from next digit
+            borrow = 1;
+        } else {
+            borrow = 0;
+        }
+        
+        // Calculate the current digit of the result
+        int digitResult = digitA - digitB;
+        
+        // Add digit to the front of result
+        result.insert(0, 1, digitResult + '0');
+    }
+    
+    // Remove leading zeros
+    size_t firstNonZero = result.find_first_not_of('0');
+    if (firstNonZero != string::npos) {
+        result = result.substr(firstNonZero);
+    } else {
+        result = "0";  // If all digits are zero
+    }
+    
+    return result;
+}
+
+string add(const std::string& a, const std::string& b) {
+    string result;
+    int carry = 0;
+    
+    // Determine the maximum length
+    int maxLength = std::max(a.length(), b.length());
+    
+    // Pad with leading zeros to make same length
+    std::string paddedA = std::string(maxLength - a.length(), '0') + a;
+    std::string paddedB = std::string(maxLength - b.length(), '0') + b;
+    
+    // Process digits from right to left
+    for (int i = maxLength - 1; i >= 0; i--) {
+        int digitA = paddedA[i] - '0';
+        int digitB = paddedB[i] - '0';
+        
+        // Calculate sum of current digits and carry
+        int sum = digitA + digitB + carry;
+        
+        // Update carry for next iteration
+        carry = sum / 10;
+        
+        // Add current digit to result
+        result.insert(0, 1, (sum % 10) + '0');
+    }
+    
+    // Add final carry if exists
+    if (carry > 0) {
+        result.insert(0, 1, carry + '0');
+    }
+    
+    return result;
+}
+
+void Solve(){
+    int t = 10;
+    while(t--){
+        string total, diff;
+        cin >> total;
+        cin >> diff;
+        
+        // Klaudia = (total + diff)/2
+        string sum = add(total, diff);
+        string klaudia = divide(sum);
+        
+        // Natalia = (total - diff)/2
+        string diff_val = subtract(total, diff);
+        string natalia = divide(diff_val);
+        
+        cout << klaudia << endl;
+        cout << natalia << endl;
+    }    
+}
+
+
+int32_t main() 
+{
+    auto begin = std::chrono::high_resolution_clock::now();
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int t = 1;
+    // freopen("in",  "r", stdin);
+    // freopen("out", "w", stdout);
+    
+    // cin >> t;
+    for(int i = 1; i <= t; i++) 
+    {
+        //cout << "Case #" << i << ": ";
+        Solve();
+    }
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cerr << "Time measured: " << elapsed.count() * 1e-9 << " seconds.\n"; 
+    return 0;
+}

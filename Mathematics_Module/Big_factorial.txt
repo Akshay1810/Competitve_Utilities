@@ -1,0 +1,35 @@
+void multiply(vector<int> &v, int no, int &size){
+	int carry = 0;
+	for(int i = 0; i < size; i++){
+		int product = v[i]*no + carry;
+		v[i] = product%10;
+		carry = product / 10;
+	}
+	//to handle the carry
+	while(carry){
+		v[size] = carry%10;
+		carry = carry/10;
+		size++;
+	}
+}
+
+void bigfactorial(int n){
+	vector<int> v(1000, 0);
+	v[0] = 1;
+	int size = 1;
+	for(int i =2; i <= n; i++){
+		multiply(v, i, size);
+	}
+	
+	//print the result in reverse order
+	reverse(all(v));
+	for(int i = 999-size+1; i <= 999; i++){
+		cout<<v[i];
+	}
+	cout<<endl;
+}
+void Solve(){
+	int n;
+	cin>>n;
+	bigfactorial(n);    
+}
