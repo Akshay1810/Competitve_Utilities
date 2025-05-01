@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int mod = 1e9+7;
+
+long long int powr(long long int a, long long int b){
+	long long int res = 1;
+	while(b){
+		if(b&1) res*= a, res%=mod;
+		a *= a, a%=mod;
+		b/=2;
+	}
+	return res;
+}
+
+int locker(int n){
+    if (n <= 4) return n;
+    long long threes = n / 3;
+    long long rem = n % 3;
+    long long twos = 0;
+
+    if (rem == 1) {
+        threes -= 1;
+        twos = 2;
+    } else if (rem == 2) {
+        twos = 1;
+    }
+    long long ans = powr(3, threes);
+    ans = (ans * powr(2, twos)) % mod;
+    return ans;
+}
