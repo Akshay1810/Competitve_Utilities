@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int mod = 9;
+
+long long int powr(long long int a, long long int b){
+   long long int res = 1;
+   while(b){
+	if(b&1) res*= a, res%=mod;
+	a *= a, a%=mod;
+	b/=2;
+   }
+   return res;
+}
+
+int solve(long long A, long long N){
+    int val = powr(A, N);
+    if(val == 0){
+        return 9;
+    }
+    return val;
+}
