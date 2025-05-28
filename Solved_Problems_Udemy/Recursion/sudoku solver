@@ -1,0 +1,70 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+using namespace std;
+
+bool isSafe(vector<vector<int>> &mat, int i, int j, int no)
+{
+	for (int k = 0; k < 9; k++)
+	{
+		if (mat[k][j] == no || mat[i][k] == no)
+		{
+			return false;
+		}
+	}
+	int sx = (i / 3) * 3;
+	int sy = (j / 3) * 3;
+
+	for (int x = sx; x < sx + 3; x++)
+	{
+		for (int y = sy; y < sy + 3; y++)
+		{
+			if (mat[x][y] == no)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void solveSudoku(vector<vector<int>> &mat, int i, int j, int n)
+{
+	if (i == n)
+	{
+		return;
+	}
+	if (j == n)
+	{
+		solveSudoku(mat, i + 1, 0, n);
+	}
+
+	if (mat[i][j] != 0)
+	{
+		solveSudoku(mat, i, j + 1, n);
+	}
+	for (int no = 1; no <= n; no++)
+	{
+		if (isSafe(mat, i, j, no))
+		{
+			mat[i][j] = no;
+			solveSudoku(mat, i, j + 1, n);
+		}
+	}
+	mat[i][j] = 0;
+	return;
+}
+
+int main()
+{
+	vector<vector<int>> mat;
+
+	for (auto it : mat)
+	{
+		for (auto it2 : it)
+		{
+			cout << it2 << " ";
+		}
+		cout << endl;
+	}
+}

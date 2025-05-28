@@ -1,0 +1,84 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+	list<int> *l; //pointer to an array of list
+	int V;
+	
+	public:
+		Graph(int v){
+			V = v;
+			l = new list<int>[V];
+		}
+		void addEdge(int i, int j, bool undir = true){
+			l[i].push_back(j);
+			if(undir){
+				l[j].push_back(i);
+			}
+		}
+		void printGraph(){
+			for(int i = 0 ; i < V; i++){
+				cout<<i<<"-->";
+				for(auto node:l[i]){
+					cout<<node<<",";
+				}
+				cout<<endl;
+			}
+		}
+		void bfs(int source){
+			queue<int> q;
+    		vector<bool> visited(V, false);
+    		q.push(source);
+    		visited[source] = true;
+    		while(!q.empty()){
+    			int ns = q.front();
+    			q.pop();
+    			cout<<ns<<" ";
+    			//push the neighbours of current queue if not visited
+    			for(auto it:l[ns]){
+    				if(!visited[it]){
+    					q.push(it);
+    					visited[it] = true;
+    				}
+    			}
+    		}
+		}
+		
+		void dfsHelper(int node, vector<int> &visited, int &cnt){
+			visited[node] = cnt;
+			for(auto it: l[node]){
+				if(!visited[it]){
+					dfsHelper(it, visited, cnt);
+				}
+			}
+		}
+		
+		int dfs(){
+			vector<int> visited(V, false);
+			int cnt = 1;
+			for(int i = 0 ; i < V; i++){
+			    if(visited[i] == false){
+			        dfsHelper(i, visited, cnt);
+			        cnt++;
+			    }
+			}
+			unordered_map<int,int> umap;
+			for(auto it:visited){
+			    cout<<it<<" ";
+			    umap[it]++;
+			}
+			long long ans = 1;
+			for(auto it:umap){
+			    ans += it.second*(V-it.second);
+			}
+			return ans/2;
+		}
+};
+
+int count_pairs(int n, vector<pair<int,int>> astronauts){
+    Graph g(n);
+    for(auto it:astronauts){
+        g.addEdge(it.first, it.second);
+    }
+    return g.dfs();
+}
